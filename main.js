@@ -23,7 +23,7 @@ async function getCity() {
 function _filterData (data) {
     return {
         city: data.results[0].components.city,
-        borough: data.results[0].formatted,
+        borough: data.results[0].components.borough || data.results[0].components.city_district,
     }
 }
 
@@ -33,14 +33,11 @@ async function getCoordinatesRequest (key = _coordinatesApiKey) {
     try {
         const {latitude, longitude} = await getUserCoordinates(); 
         const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}%2C${longitude}&key=${key}`);
-        // const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=48.1486%2C17.1077&key=${key}`);
-
         if (!response.ok) {
             throw new Error();
         }
-        
+      
         const result =  await response.json();
-        console.log(result)
 
         
         return result;
