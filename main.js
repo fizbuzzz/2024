@@ -23,7 +23,7 @@ async function getCity() {
 function _filterData (data) {
     return {
         city: data.results[0].components.city,
-        borough: data.results[0].components.borough,
+        borough: data.results[0].components.borough || data.results[0].components.city_district,
     }
 }
 
@@ -38,6 +38,8 @@ async function getCoordinatesRequest (key = _coordinatesApiKey) {
         }
       
         const result =  await response.json();
+
+        
         return result;
 
         
@@ -60,7 +62,6 @@ async function getTemperatureRequest(key = _weatherApiKey) {
 
         const result =  await response.json();
         result.borough = borough;
-        // console.log(result)
 
         document.querySelector('.widget').innerHTML = `
         <span class="widget__city">${result.location.name} , ${result.location.country}</span>
